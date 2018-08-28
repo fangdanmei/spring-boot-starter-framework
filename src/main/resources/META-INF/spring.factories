@@ -1,4 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 cn.cebest.framework.cache.redis.RedisConfig,\
 cn.cebest.framework.orm.mybatis.MybatisPlusConfig,\
-cn.cebest.framework.jackson.JacksonConfig
+cn.cebest.framework.jackson.JacksonConfig,\
+cn.cebest.framework.template.TemplateConfig

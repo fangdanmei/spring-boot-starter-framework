@@ -7,6 +7,11 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+/**
+ *  json序列化配置
+  * @author maming  
+  * @date 2018年8月28日
+ */
 @Configuration
 @ConditionalOnProperty(prefix="gc.jackson", value="enable", matchIfMissing = true)
 public class JacksonConfig {
