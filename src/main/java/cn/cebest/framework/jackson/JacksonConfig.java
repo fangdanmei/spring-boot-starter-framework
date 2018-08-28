@@ -1,5 +1,6 @@
 package cn.cebest.framework.jackson;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Configuration
+@ConditionalOnProperty(prefix="gc.jackson", value="enable", matchIfMissing = true)
 public class JacksonConfig {
 
 	 @Bean
