@@ -3,4 +3,5 @@ cn.cebest.framework.cache.redis.RedisConfig,\
 cn.cebest.framework.orm.mybatis.MybatisPlusConfig,\
 cn.cebest.framework.jackson.JacksonConfig,\
 cn.cebest.framework.template.TemplateConfig,\
-cn.cebest.framework.quartz.QuartzConfig
+cn.cebest.framework.quartz.QuartzConfig,\
+cn.cebest.framework.mail.MailService
