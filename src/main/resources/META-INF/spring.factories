@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-cn.cebest.framework.cache.redis.RedisConfig
+cn.cebest.framework.cache.redis.RedisConfig,\
+MybatisPlusConfig
