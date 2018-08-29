@@ -105,5 +105,9 @@
 	        <artifactId>pagehelper</artifactId>
 	        <version>3.7.5</version>
        	</dependency>
+		<dependency>
+			<groupId>antlr</groupId>
+			<artifactId>antlr</artifactId>
+		</dependency>
 	</dependencies>
 </project>
