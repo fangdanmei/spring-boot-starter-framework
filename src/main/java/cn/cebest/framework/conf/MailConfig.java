@@ -1,10 +1,12 @@
-package cn.cebest.framework.mail;
+package cn.cebest.framework.conf;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import cn.cebest.framework.mail.MailService;
 import cn.cebest.framework.mail.impl.MailServiceImpl;
 
 

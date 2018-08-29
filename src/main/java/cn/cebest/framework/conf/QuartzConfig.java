@@ -1,4 +1,4 @@
-package cn.cebest.framework.quartz;
+package cn.cebest.framework.conf;
 
 import org.quartz.Scheduler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -7,6 +7,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
+
+import cn.cebest.framework.quartz.QuartzTaskService;
+import cn.cebest.framework.quartz.SpringJobFactory;
 import cn.cebest.framework.quartz.impl.QuartzTaskServiceImpl;
 
 

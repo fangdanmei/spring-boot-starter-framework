@@ -1,4 +1,4 @@
-package cn.cebest.framework.jackson;
+package cn.cebest.framework.conf;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

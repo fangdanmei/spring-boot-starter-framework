@@ -1,4 +1,4 @@
-package cn.cebest.framework.util.quartz;
+package cn.cebest.framework.quartz;
 
 import java.lang.reflect.Method;
 import org.apache.commons.lang3.StringUtils;

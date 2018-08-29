@@ -1,4 +1,4 @@
-package cn.cebest.framework.util.quartz;
+package cn.cebest.framework.quartz;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -6,7 +6,6 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
-import cn.cebest.framework.quartz.QuartzTask;
 import lombok.extern.slf4j.Slf4j;
 
 /**

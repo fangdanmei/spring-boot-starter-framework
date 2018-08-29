@@ -1,4 +1,4 @@
-package cn.cebest.framework.util.quartz;
+package cn.cebest.framework.quartz;
 
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
@@ -11,7 +11,6 @@ import org.quartz.SchedulerException;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
 import cn.cebest.framework.constant.Constants;
-import cn.cebest.framework.quartz.QuartzTask;
 import lombok.extern.slf4j.Slf4j;
 
 /**

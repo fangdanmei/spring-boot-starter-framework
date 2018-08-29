@@ -1,4 +1,4 @@
-package cn.cebest.framework.template;
+package cn.cebest.framework.conf;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
