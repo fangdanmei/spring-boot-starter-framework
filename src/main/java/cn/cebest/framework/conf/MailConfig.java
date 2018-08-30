@@ -5,7 +5,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import cn.cebest.framework.mail.MailService;
 import cn.cebest.framework.mail.impl.MailServiceImpl;
 
@@ -17,13 +18,18 @@ import cn.cebest.framework.mail.impl.MailServiceImpl;
  */
 @Configuration
 @ConditionalOnClass(MailService.class)
-@ConditionalOnProperty(prefix="gc.mail", value="enable", matchIfMissing = true)
+@ConditionalOnProperty(prefix="gc.mail", value="enable", matchIfMissing = false)
 public class MailConfig {
 
 	@Bean
 	@ConditionalOnMissingBean(MailService.class)
 	public MailService mailService(){
 		return new MailServiceImpl();
+	}
+	
+	@ConditionalOnMissingBean(JavaMailSender.class)
+	public JavaMailSender  mailSender(){
+		return new JavaMailSenderImpl();
 	}
 	
 }

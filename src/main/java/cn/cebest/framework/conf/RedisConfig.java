@@ -19,7 +19,7 @@ import cn.cebest.framework.cache.redis.impl.RedisServiceImpl;
 
 @Configuration
 @ConditionalOnClass(RedisService.class)
-@ConditionalOnProperty(prefix="gc.redis", value="enable", matchIfMissing = true)
+@ConditionalOnProperty(prefix="gc.redis", value="enable", matchIfMissing = false)
 public class RedisConfig {
 	
 	@Bean

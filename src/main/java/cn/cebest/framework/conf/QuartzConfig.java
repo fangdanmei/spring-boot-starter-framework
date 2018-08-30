@@ -1,5 +1,6 @@
 package cn.cebest.framework.conf;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.quartz.Scheduler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -20,7 +21,8 @@ import cn.cebest.framework.quartz.impl.QuartzTaskServiceImpl;
  */
 @Configuration
 @ConditionalOnClass(QuartzTaskService.class)
-@ConditionalOnProperty(prefix="gc.quartz", value="enable", matchIfMissing = true)
+@ConditionalOnProperty(prefix="gc.quartz", value="enable", matchIfMissing = false)
+@MapperScan("cn.cebest.framework.quartz.dao")
 public class QuartzConfig {
 
 	@Bean

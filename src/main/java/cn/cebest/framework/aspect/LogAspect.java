@@ -58,7 +58,7 @@ public class LogAspect {
 	 * @param result
 	 * @throws Throwable
 	 */
-	@AfterReturning(returning = "ret", pointcut = "webLog()")
+	@AfterReturning(returning = "result", pointcut = "webLog()")
 	public void doAfterReturning(Object result) throws Throwable {
 		// 处理完请求，返回内容
 		log.info("RESPONSE : " + result);
