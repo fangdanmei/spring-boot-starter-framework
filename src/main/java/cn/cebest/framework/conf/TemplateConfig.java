@@ -31,7 +31,7 @@ public class TemplateConfig {
 	/**
 	 * 共享类
 	 */
-	@Value("#{${gc.template.classNames:null}}")
+	@Value("#{${gc.template.classnames:null}}")
 	private Map<String,String> classNames;
 	
 	
