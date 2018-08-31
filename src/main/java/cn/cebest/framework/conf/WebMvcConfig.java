@@ -12,6 +12,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import lombok.extern.slf4j.Slf4j;
@@ -39,9 +42,23 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 	 */
 	@Value("${gc.webmvc.file.maxUploadSize:10 * 1024 * 1024}")
 	private String maxUploadSize;
+	
+	/**
+	 * 静态资源
+	 */
+	@Value("#{${gc.webmvc.static.url2locs:null}}")
+	private Map<String,String> url2locs;
+	
+	/**
+	 * 拦截器
+	 */
+	@Value("#{${gc.webmvc.interceptor.pattern2class:null}}")
+	private Map<String,String> pattern2class;
 
 	
-	
+	/**
+	 * 使用@Value需要的bean
+	 */
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertyConfigure(){
 		return new PropertySourcesPlaceholderConfigurer();
@@ -82,6 +99,43 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 		return multipartResolver;
 	}
 	
+	
+	/**
+	 * 设置访问静态资源
+	 */
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+		if (url2locs != null) {
+			Set<String> keys = url2locs.keySet();
+			for (String key : keys) {
+				String location = url2locs.get(key);
+				registry.addResourceHandler(key).addResourceLocations(location);
+			}
+		}
+	}
+	
+	
+	/**
+	 * 配置拦截器
+	 */
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		if (pattern2class != null) {
+			Set<String> keys = pattern2class.keySet();
+			for (String pattern : keys) {
+				String className = pattern2class.get(pattern);
+				try {
+					Class<?> c = Class.forName(className);
+					if(org.springframework.web.servlet.HandlerInterceptor.class.isAssignableFrom(c)){
+						registry.addInterceptor((HandlerInterceptor) c.newInstance()).addPathPatterns(pattern);
+					}
+				} catch (Exception e) {
+					log.error("添加拦截器异常", e);
+				} 
+			}
+		}
+	}
 	
 	
 }
