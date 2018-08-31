@@ -1,5 +1,8 @@
 package cn.cebest.framework.conf;
 
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.script.ScriptEngine;
@@ -10,6 +13,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -135,6 +141,30 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 				} 
 			}
 		}
+	}
+	
+	
+	/**
+	 * 重写HttpMessageConverter
+	 */
+	@Override
+	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+		converters.add(stringHttpMessageConverter());
+	}
+	
+	
+	/**
+	 * 配置消息转换器
+	 */
+	@Bean
+	StringHttpMessageConverter stringHttpMessageConverter(){
+		List<MediaType> supportedMediaTypes = new ArrayList<>();
+		supportedMediaTypes.add(new MediaType("text", "plain", Charset.forName("UTF-8")));
+		supportedMediaTypes.add(new MediaType("text", "html", Charset.forName("UTF-8")));
+		supportedMediaTypes.add(new MediaType("application", "json", Charset.forName("UTF-8")));
+		StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter(Charset.forName("UTF-8"));
+		stringHttpMessageConverter.setSupportedMediaTypes(supportedMediaTypes);
+		return stringHttpMessageConverter;
 	}
 	
 	
