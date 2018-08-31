@@ -31,8 +31,8 @@ public class TemplateConfig {
 	/**
 	 * 共享类
 	 */
-	@Value("#{${gc.template.classnames:null}}")
-	private Map<String,String> classnames;
+	@Value("#{${gc.template.classNames:null}}")
+	private Map<String,String> classNames;
 	
 	
 	/**
@@ -55,10 +55,10 @@ public class TemplateConfig {
 	    // 模板位置
 	    JFinalViewResolver.engine.setBaseTemplatePath(location);
 	    try {
-			if(classnames != null) {
-				Set<String> keys = classnames.keySet();
+			if(classNames != null) {
+				Set<String> keys = classNames.keySet();
 				for (String key : keys) {
-					String className = classnames.get(key);
+					String className = classNames.get(key);
 					Class<?> c = Class.forName(className);
 					jfr.addSharedObject(key, c.newInstance());
 				}
