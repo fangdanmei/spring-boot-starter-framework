@@ -12,6 +12,7 @@ spring-boot-starter-framework在基础上又做了一次整合，里面包含上
         <artifactId>spring-boot-starter-framework</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </dependency>
+    
 ```
 
 ## 该框架包含哪些功能
