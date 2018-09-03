@@ -73,4 +73,164 @@ spring-boot-starter-framework在基础上又做了一次整合，里面包含上
     @NotBlank 验证注解的元素值不为空（不为null、去除首位空格后长度为0），不同于@NotEmpty，@NotBlank只应用于字符串且在比较时会去除字符串的空格
     @Email 验证注解的元素值是Email，也可以通过正则表达式和flag指定自定义的email格式
     
+### 防xss注入
+
+防xss注入通过过滤器Filter实现，我们不需要关注，每次请求所有的参数会被自动过滤
+
+
+### log日志
+
+见上面@SysLog注解的用法
+
+
+### 核心配置及实现
+
+    我们把核心配置放在最后面，是因为它比较主要，也是spring-boot-starter-framework核心框架包的重中之重，
+    下面我们拿其中的几个讲解一下如何使用：
     
+
+1)webmvc配置：
+
+```
+    
+@Slf4j
+@Configuration
+@ConditionalOnProperty(prefix="gc.webmvc", value="enable", matchIfMissing = true)
+public class WebMvcConfig extends WebMvcConfigurerAdapter{
+	
+	/**
+	 * 存放访问的url及要跳转的视图
+	 */
+	@Value("#{${gc.webmvc.url2views:null}}")
+	private Map<String,String> url2views;
+	
+	/**
+	 * 文件上传最大限制
+	 */
+	@Value("${gc.webmvc.file.maxUploadSize:10 * 1024 * 1024}")
+	private String maxUploadSize;
+	
+	/**
+	 * 静态资源
+	 */
+	@Value("#{${gc.webmvc.static.url2locs:null}}")
+	private Map<String,String> url2locs;
+	
+	/**
+	 * 拦截器
+	 */
+	@Value("#{${gc.webmvc.interceptor.pattern2class:null}}")
+	private Map<String,String> pattern2class;
+
+	
+	/**
+	 * 使用@Value需要的bean
+	 */
+	@Bean
+	public static PropertySourcesPlaceholderConfigurer propertyConfigure(){
+		return new PropertySourcesPlaceholderConfigurer();
+	}
+	
+	
+	/**
+	 * 无逻辑视图跳转
+	 */
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry) {
+		if (url2views != null) {
+			Set<String> keys = url2views.keySet();
+			for (String key : keys) {
+				String value = url2views.get(key);
+				registry.addViewController("/" + key).setViewName("/" + value);
+			}
+		}
+	}
+	
+	
+	/**
+	 * 文件上传相关配置
+	 * @return
+	 */
+	@Bean
+	public MultipartResolver multipartResolver() {
+		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+		// 默认允许最大上传10M
+		 ScriptEngineManager manager = new ScriptEngineManager();
+		 ScriptEngine se = manager.getEngineByName("js");
+		 try {
+			Double  maxSize = (Double) se.eval(maxUploadSize);
+			multipartResolver.setMaxUploadSize(maxSize.longValue());
+		} catch (ScriptException e) {
+			log.error("执行表达式异常", e);
+		}
+		return multipartResolver;
+	}
+	
+	
+	/**
+	 * 设置访问静态资源
+	 */
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+		if (url2locs != null) {
+			Set<String> keys = url2locs.keySet();
+			for (String key : keys) {
+				String location = url2locs.get(key);
+				registry.addResourceHandler(key).addResourceLocations(location);
+			}
+		}
+	}
+	
+	
+	/**
+	 * 配置拦截器
+	 */
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		if (pattern2class != null) {
+			Set<String> keys = pattern2class.keySet();
+			for (String pattern : keys) {
+				String className = pattern2class.get(pattern);
+				try {
+					Class<?> c = Class.forName(className);
+					if(org.springframework.web.servlet.HandlerInterceptor.class.isAssignableFrom(c)){
+						registry.addInterceptor((HandlerInterceptor) c.newInstance()).addPathPatterns(pattern);
+					}
+				} catch (Exception e) {
+					log.error("添加拦截器异常", e);
+				} 
+			}
+		}
+	}
+	
+	
+	/**
+	 * 重写HttpMessageConverter
+	 */
+	@Override
+	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+		converters.add(stringHttpMessageConverter());
+	}
+	
+	
+	/**
+	 * 配置消息转换器
+	 */
+	@Bean
+	StringHttpMessageConverter stringHttpMessageConverter(){
+		List<MediaType> supportedMediaTypes = new ArrayList<>();
+		supportedMediaTypes.add(new MediaType("text", "plain", Charset.forName("UTF-8")));
+		supportedMediaTypes.add(new MediaType("text", "html", Charset.forName("UTF-8")));
+		supportedMediaTypes.add(new MediaType("application", "json", Charset.forName("UTF-8")));
+		StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter(Charset.forName("UTF-8"));
+		stringHttpMessageConverter.setSupportedMediaTypes(supportedMediaTypes);
+		return stringHttpMessageConverter;
+	}
+	
+	
+}
+
+```
+    
+
