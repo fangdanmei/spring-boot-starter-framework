@@ -237,7 +237,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 
 例如我们这里可以通过设置 ` gc.webmvc.enable=false ` 来关闭此配置<br/>
 
-可以通过 ` gc.webmvc.url2views={login:"login",index:"index",main:"main"} ` 配置访问路径与视图的对应关系 `注意：这里只应用于无业务逻辑处理的action请求`
+可以通过 ` gc.webmvc.url2views={login:"login",index:"index",main:"main"} ` 配置访问路径与视图的对应关系 `注意：这里只应用于无业务逻辑处理的action请求`<br/>
+
+通过 ` gc.webmvc.file.maxUploadSize:20 * 1024 * 1024 `设置文件上传文件最大限制<br/>
+
+通过 `gc.webmvc.interceptor.pattern2class={"/**":"cn.cebest.interceptor.AuthorityIntercept"}` 设置拦截器，map对象的key为拦截路径，value为拦截器全路径<br/>
 
 
 
