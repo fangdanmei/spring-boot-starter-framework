@@ -41,6 +41,14 @@ spring-boot-starter-framework在基础上又做了一次整合，里面包含上
 
     @Mobile
     private String phone;
+    
+@SysLog应用在Controller类中的方法上，用于记录请求日志(包括请求参数、url、ip地址、返回结果等等),用法如下:
+
+    @SysLog
+	@GetMapping("index")
+	public String index(){
+		// TODO
+	}
 
 
     
