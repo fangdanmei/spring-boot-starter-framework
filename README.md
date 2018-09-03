@@ -245,5 +245,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 
 
 
+这样我们在以后的开发过程中不需要添加这些配置了，而只是在配置文件中添加相应的配置就可以了
+
+
     
 
