@@ -1,6 +1,9 @@
 # spring-boot-starter-framework使用说明
 
 
+
+
+
 spring-boot-starter-framework是一个核心框架包，springboot整合了很多依赖包，像spring-boot-starter-web、<br/>
 spring-boot-starter-data-redis等等。<br/>
 spring-boot-starter-framework在基础上又做了一次整合，里面包含上面的所有start依赖。<br/>
@@ -13,16 +16,15 @@ spring-boot-starter-framework在基础上又做了一次整合，里面包含上
         <version>0.0.1-SNAPSHOT</version>
     </dependency>
     
-    
 ```
 
 ## 该框架包含哪些功能
 
-    1、工具类<br/>
-    2、通用注解<br/>
-    3、参数验证<br/>
-    4、防xss注入<br/>
-    5、log日志<br/>
-    6、核心配置及实现(redis、mail、json、mybatis、quartz、shiro、solr、enjoy模板引擎、webmvc等等)<br/>
+1、工具类<br/>
+2、通用注解<br/>
+3、参数验证<br/>
+4、防xss注入<br/>
+5、log日志<br/>
+6、核心配置及实现(redis、mail、json、mybatis、quartz、shiro、solr、enjoy模板引擎、webmvc等等)<br/>
     
     
