@@ -235,7 +235,9 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 
 我们在这里为每个配置设置了一个开关，如果我们不需要相关配置的时候，我们可以在日后开发的项目配置中设置改配置的开关就可以了<br/>
 
-例如我们这里可以通过设置 ` gc.webmvc.enable=false ` 来关闭此配置
+例如我们这里可以通过设置 ` gc.webmvc.enable=false ` 来关闭此配置<br/>
+
+可以通过 ` gc.webmvc.url2views={login:"login",index:"index",main:"main"} ` 配置访问路径与视图的对应关系 `注意：这里只应用于无业务逻辑处理的action请求`
 
 
 
