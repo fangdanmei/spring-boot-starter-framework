@@ -85,7 +85,8 @@ spring-boot-starter-framework在基础上又做了一次整合，里面包含上
 
 ### 核心配置及实现
 
-    我们把核心配置放在最后面，是因为它比较主要，也是spring-boot-starter-framework核心框架包的重中之重，
+    ` 我们把核心配置放在最后面，是因为它比较主要，也是spring-boot-starter-framework核心框架包的重中之重 ` <br/>
+    
     下面我们拿其中的几个讲解一下如何使用：
     
 
