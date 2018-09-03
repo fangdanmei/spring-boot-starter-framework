@@ -6,4 +6,5 @@ cn.cebest.framework.conf.TemplateConfig,\
 cn.cebest.framework.conf.QuartzConfig,\
 cn.cebest.framework.conf.MailConfig,\
 cn.cebest.framework.conf.WebMvcConfig,\
-cn.cebest.framework.conf.ShiroConfig
+cn.cebest.framework.conf.ShiroConfig,\
+cn.cebest.framework.conf.SolrConfig
