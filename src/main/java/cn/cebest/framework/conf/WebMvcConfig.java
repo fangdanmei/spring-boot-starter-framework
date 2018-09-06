@@ -8,16 +8,16 @@ import java.util.Set;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import javax.servlet.MultipartConfigElement;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -90,20 +90,21 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 	 * 文件上传相关配置
 	 * @return
 	 */
-	@Bean
-	public MultipartResolver multipartResolver() {
-		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-		// 默认允许最大上传10M
-		 ScriptEngineManager manager = new ScriptEngineManager();
-		 ScriptEngine se = manager.getEngineByName("js");
-		 try {
-			Double  maxSize = (Double) se.eval(maxUploadSize);
-			multipartResolver.setMaxUploadSize(maxSize.longValue());
-		} catch (ScriptException e) {
-			log.error("执行表达式异常", e);
-		}
-		return multipartResolver;
-	}
+	
+	 @Bean
+	    public MultipartConfigElement configElement() {
+	        MultipartConfigFactory factory = new MultipartConfigFactory();
+	        ScriptEngineManager manager = new ScriptEngineManager();
+			 ScriptEngine se = manager.getEngineByName("js");
+			 try {
+		        Double  maxSize = (Double) se.eval(maxUploadSize);
+		        factory.setMaxFileSize(maxSize.longValue());
+		        factory.setMaxRequestSize(maxSize.longValue());
+			 } catch (ScriptException e) {
+				log.error("执行表达式异常", e);
+			}
+	        return factory.createMultipartConfig();
+	    }
 	
 	
 	/**
