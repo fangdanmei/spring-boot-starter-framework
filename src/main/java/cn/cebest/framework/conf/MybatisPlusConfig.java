@@ -1,11 +1,9 @@
 package cn.cebest.framework.conf;
 
-import java.util.Properties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
-import com.github.pagehelper.PageHelper;
 
 
 /**
@@ -23,19 +21,9 @@ public class MybatisPlusConfig {
 	 */
 	@Bean
     public PaginationInterceptor paginationInterceptor() {
-        return new PaginationInterceptor();
+		PaginationInterceptor page = new PaginationInterceptor();
+        page.setDialectType("mysql");
+        return page;
     }
-
 	
-	/**
-	 * 注册MyBatis分页插件PageHelper
-	 */
-	@Bean
-    public PageHelper pageHelper() {
-        PageHelper pageHelper = new PageHelper();
-        Properties p = new Properties();
-        p.setProperty("dialect", "mysql");
-        pageHelper.setProperties(p);
-        return pageHelper;
-	}
 }
