@@ -39,19 +39,19 @@ public class ShiroConfig {
 	/**
 	 * redis服务地址
 	 */
-	@Value("${spring.redis.host}")
+	@Value("${spring.redis.host:127.0.0.1}")
     private String host;
 	
 	/**
 	 * redis服务端口
 	 */
-    @Value("${spring.redis.port}")
+    @Value("${spring.redis.port:6379}")
     private int port;
     
     /**
      * redis服务超时时间
      */
-    @Value("${spring.redis.timeout}")
+    @Value("${spring.redis.timeout:5000}")
     private int timeout;
     
     /**
@@ -83,7 +83,19 @@ public class ShiroConfig {
      */
     @Value("${gc.shiro.cipher.key:3AvVhmFLUs0KTA3Kprsdag==}")
     private String cipherKey;
+    
+    /**
+     * 是否从数据库加载权限，默认不加载数据库
+     */
+    @Value("${gc.shiro.load.db:false}")
+    private boolean loadDb;
 	
+    
+    @Value("#{${gc.shiro.url2auths:null}}")
+	private Map<String,String> url2auths;
+    
+    @Value("${gc.shiro.cache.enable:false}")
+    private boolean cache;
     
 	@Autowired
 	private ShiroService shiroService;
@@ -131,10 +143,18 @@ public class ShiroConfig {
         //未授权界面;
         shiroFilterFactoryBean.setUnauthorizedUrl("");
 		
-        //加载权限配置
-        Map<String, String> filterChainDefinitionMap = shiroService.loadFilterChainDefinitions();
         
-        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+        if(loadDb) { // 从数据库加载配置
+        	//加载权限配置
+            Map<String, String> filterChainDefinitionMap = shiroService.loadFilterChainDefinitions();
+            
+            shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+        } else {// 读取配置文件中的配置
+        	if(url2auths != null) {
+        		shiroFilterFactoryBean.setFilterChainDefinitionMap(url2auths);
+        	}
+        }
+        
         return shiroFilterFactoryBean;
 	}
 	
@@ -142,6 +162,9 @@ public class ShiroConfig {
      * cacheManager 缓存 redis实现
      * 使用的是shiro-redis开源插件
      */
+	
+	@Bean
+	@ConditionalOnProperty(prefix="gc.shiro.cache", value="enable", matchIfMissing = false)
     public RedisCacheManager cacheManager() {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
         redisCacheManager.setRedisManager(redisManager());
@@ -152,6 +175,8 @@ public class ShiroConfig {
      * 配置shiro redisManager
      * 使用的是shiro-redis开源插件
      */
+	@Bean
+	@ConditionalOnProperty(prefix="gc.shiro.cache", value="enable", matchIfMissing = false)
     public RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
         redisManager.setHost(host);
@@ -167,6 +192,7 @@ public class ShiroConfig {
      * 使用的是shiro-redis开源插件
      */
     @Bean
+    @ConditionalOnProperty(prefix="gc.shiro.cache", value="enable", matchIfMissing = false)
     public DefaultWebSessionManager sessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setSessionDAO(redisSessionDAO());
@@ -178,6 +204,7 @@ public class ShiroConfig {
      * 使用的是shiro-redis开源插件
      */
     @Bean
+    @ConditionalOnProperty(prefix="gc.shiro.cache", value="enable", matchIfMissing = false)
     public RedisSessionDAO redisSessionDAO() {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
         redisSessionDAO.setRedisManager(redisManager());
@@ -224,8 +251,12 @@ public class ShiroConfig {
 		} catch (Exception e) {
 			log.error("设置自定义权限认证异常", e);
 		}
-		// 自定义缓存实现 使用redis
-		securityManager.setCacheManager(cacheManager());
+		
+		if(cache) {
+			// 自定义缓存实现 使用redis
+			securityManager.setCacheManager(cacheManager());
+		}
+		
 		// 注入记住我管理器;
 		securityManager.setRememberMeManager(rememberMeManager());
 		return securityManager;
