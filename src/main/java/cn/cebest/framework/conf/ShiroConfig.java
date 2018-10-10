@@ -23,7 +23,7 @@ import java.util.Map;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.realm.Realm;
+import org.apache.shiro.realm.AuthorizingRealm;
 
 /**
  *  shiro相关配置
@@ -35,6 +35,12 @@ import org.apache.shiro.realm.Realm;
 @ConditionalOnClass(ShiroService.class)
 @ConditionalOnProperty(prefix="gc.shiro", value="enable", matchIfMissing = false)
 public class ShiroConfig {
+	
+	/**
+	 * 自定义shiroRealm
+	 */
+	@Autowired
+	AuthorizingRealm shiroRealm;
 	
 	/**
 	 * redis服务地址
@@ -71,12 +77,6 @@ public class ShiroConfig {
      */
     @Value("${gc.shiro.unauthorized.url:/403}")
     private String unauthorizedUrl;
-    
-    /**
-     * 自定义shiroRealm类全地址(包括包名)
-     */
-    @Value("${gc.shiro.shirorealm}")
-    private String shiroRealm;
     
     /**
      * cookie加密秘钥
@@ -236,22 +236,13 @@ public class ShiroConfig {
     }
 	
 	
-	
 	/**
 	 * 设置自定义权限认证
 	 */
 	@Bean
 	public SecurityManager securityManager() {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-		try {
-			Class<?> c = Class.forName(shiroRealm);
-			if (org.apache.shiro.realm.AuthorizingRealm.class.isAssignableFrom(c)) {
-				securityManager.setRealm((Realm) c.newInstance());
-			}
-		} catch (Exception e) {
-			log.error("设置自定义权限认证异常", e);
-		}
-		
+		securityManager.setRealm(shiroRealm);
 		if(cache) {
 			// 自定义缓存实现 使用redis
 			securityManager.setCacheManager(cacheManager());
