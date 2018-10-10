@@ -108,6 +108,7 @@ public class ShiroConfig {
 	
 	
 	
+	
 	/**
      * 密码校验规则HashedCredentialsMatcher
      * 这个类是为了对密码进行编码的 ,
@@ -242,6 +243,8 @@ public class ShiroConfig {
 	@Bean
 	public SecurityManager securityManager() {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+		// 设置加密方式
+		shiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
 		securityManager.setRealm(shiroRealm);
 		if(cache) {
 			// 自定义缓存实现 使用redis
