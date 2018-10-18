@@ -95,9 +95,9 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		ScriptEngineManager manager = new ScriptEngineManager();
 		ScriptEngine se = manager.getEngineByName("js");
 		try {
-			Integer maxSize = (Integer) se.eval(maxUploadSize);
-			factory.setMaxFileSize(maxSize.longValue());
-			factory.setMaxRequestSize(maxSize.longValue());
+			Double  maxSize = (Double) se.eval(maxUploadSize);
+	        factory.setMaxFileSize(maxSize.longValue());
+	        factory.setMaxRequestSize(maxSize.longValue());
 		} catch (ScriptException e) {
 			log.error("执行表达式异常", e);
 		}
