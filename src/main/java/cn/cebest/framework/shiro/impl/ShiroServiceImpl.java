@@ -12,6 +12,8 @@ import org.apache.shiro.web.filter.mgt.PathMatchingFilterChainResolver;
 import org.apache.shiro.web.servlet.AbstractShiroFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
 import cn.cebest.framework.shiro.ShiroService;
 import cn.cebest.framework.shiro.dao.PermissionMapper;
 import cn.cebest.framework.shiro.entity.RolePermission;
@@ -23,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2018年5月7日
  */
 @Slf4j
+@Service
 public class ShiroServiceImpl implements ShiroService {
 	
 	/**
@@ -37,8 +40,8 @@ public class ShiroServiceImpl implements ShiroService {
 	@Value("#{${gc.shiro.post.filterchain:null}}")
 	private Map<String,String> postFilterChain;
 
-	@Autowired
-	private PermissionMapper permissionMapper;
+//	@Autowired
+//	private PermissionMapper permissionMapper;
 
 	@Override
 	public Map<String, String> loadFilterChainDefinitions() {
@@ -59,7 +62,7 @@ public class ShiroServiceImpl implements ShiroService {
 		// 配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了
 		// filterChainDefinitionMap.put("/user/logout", "logout");
 
-		Map<String, Object> param = new HashMap<>();
+		/*Map<String, Object> param = new HashMap<>();
 		param.put("pageNum", "1");
 		param.put("pageSize", "0"); // 查询全部
 		List<T> data = permissionMapper.pageList(param);
@@ -71,7 +74,7 @@ public class ShiroServiceImpl implements ShiroService {
 			String url = permission.getUrl();
 			String permissionV = "perms[" + permission.getPermission() + "]";
 			filterChainDefinitionMap.put(url, permissionV);
-		}
+		}*/
 
 		// filterChainDefinitionMap.put("/**", "user");
 		

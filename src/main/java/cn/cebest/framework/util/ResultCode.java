@@ -23,7 +23,9 @@ public class ResultCode {
 	public static final ResultCode UNSUPPORTED_MEDIA_TYPE = new ResultCode(415, "错误的请求格式");
 	public static final ResultCode METHOD_ERROR = new ResultCode(405, "请求方法错误");
 	public static final ResultCode SERVER_ERROR = new ResultCode(500, "服务器错误");
-	
+	public static final ResultCode RESOURCE_URL_EXISTS_ERROR = new ResultCode(4001, "资源URL已存在");
+	public static final ResultCode PERMISSION_EXISTS_ERROR = new ResultCode(4002, "权限表达式已存在");
+	public static final ResultCode PARENT_CODE_NOT_EXISTS = new ResultCode(4003, "父标识不存在");
 	// 状态码
 	public Integer code;
 	// 提示信息

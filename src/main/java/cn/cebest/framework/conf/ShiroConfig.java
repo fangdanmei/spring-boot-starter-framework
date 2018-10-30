@@ -19,6 +19,8 @@ import org.springframework.context.annotation.Configuration;
 import cn.cebest.framework.shiro.ShiroService;
 import cn.cebest.framework.shiro.impl.ShiroServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.LinkedHashMap;
 import java.util.Map;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.codec.Base64;
@@ -100,11 +102,11 @@ public class ShiroConfig {
 	@Autowired
 	private ShiroService shiroService;
 	
-	@Bean
+	/*@Bean
 	@ConditionalOnMissingBean(ShiroService.class)
 	public ShiroService shiroService(){
 		return new ShiroServiceImpl();
-	}
+	}*/
 	
 	
 	
@@ -152,7 +154,9 @@ public class ShiroConfig {
             shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         } else {// 读取配置文件中的配置
         	if(url2auths != null) {
-        		shiroFilterFactoryBean.setFilterChainDefinitionMap(url2auths);
+        		Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
+        		filterChainDefinitionMap.putAll(url2auths);
+        		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         	}
         }
         
